@@ -1,0 +1,5 @@
+-e .
+scikit-learn
+numpy
+pandas
+setuptools
