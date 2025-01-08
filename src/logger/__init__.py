@@ -13,18 +13,29 @@ class LoggerInstance():
     def __init__(self, name: str, level: str, file_path: str):
         self.logger = logging.getLogger(name)
         self.logger.setLevel(level)
+
+        # configure formatter and the stream handler
         formatter = logging.Formatter('%(asctime)s - %(name)s - %(levelname)s - %(message)s')
+        console_hancdler = logging.StreamHandler()
+        console_hancdler.addFilter(formatter)
+
+        # create a file handler
         file_handler = RotatingFileHandler(
             from_root(file_path), 
             mode='a', 
             maxBytes=1e6, 
             backupCount=10
             )
+        
+        # set the level and formatter for the file handler
         file_handler.setLevel(level)
         file_handler.setFormatter(formatter)
         self.logger.addHandler(file_handler)
+        self.logger.addHandler(console_hancdler)
 
     def get_logger(self) -> logging.Logger:
+        """
+        Returns the logger instance."""
         return self.logger
 
 
